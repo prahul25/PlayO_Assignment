@@ -6,7 +6,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 500,
     trackingId: "#TRK1",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Laptop",
@@ -15,7 +15,7 @@ let customerList = [
     paymentMode: "PayPal",
     amount: 1200,
     trackingId: "#TRK2",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Tablet",
@@ -51,7 +51,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 700,
     trackingId: "#TRK6",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Wireless Headphones",
@@ -60,7 +60,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 150,
     trackingId: "#TRK7",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Smartwatch",
@@ -87,7 +87,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 250,
     trackingId: "#TRK10",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Action Camera",
@@ -105,7 +105,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 180,
     trackingId: "#TRK12",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "VR Headset",
@@ -114,7 +114,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 350,
     trackingId: "#TRK13",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Wireless Earbuds",
@@ -132,7 +132,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 550,
     trackingId: "#TRK15",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "E-reader",
@@ -159,7 +159,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 40,
     trackingId: "#TRK18",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Smart Scale",
@@ -168,7 +168,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 100,
     trackingId: "#TRK19",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Bluetooth Keyboard",
@@ -186,7 +186,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 200,
     trackingId: "#TRK21",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "External Hard Drive",
@@ -204,7 +204,7 @@ let customerList = [
     paymentMode: "PayPal",
     amount: 20,
     trackingId: "#TRK23",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Wireless Router",
@@ -222,7 +222,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 90,
     trackingId: "#TRK25",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Wi-Fi Range Extender",
@@ -240,7 +240,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 200,
     trackingId: "#TRK27",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Wireless Keyboard",
@@ -249,7 +249,7 @@ let customerList = [
     paymentMode: "Credit Card",
     amount: 100,
     trackingId: "#TRK28",
-    status: "Success"
+    status: "Completed"
   },
   {
     productName: "Smart Plug",
@@ -267,7 +267,7 @@ let customerList = [
     paymentMode: "Debit Card",
     amount: 60,
     trackingId: "#TRK30",
-    status: "Success"
+    status: "Completed"
   }
 ];
 

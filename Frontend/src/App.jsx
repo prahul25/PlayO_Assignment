@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import customerList from "./Assets/customerData";
+import ProfileImg from "./Assets/Photo.png";
 import "./App.css";
 import CustomerForm from "./CustomerForm";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-function CustomerList() {
+function App() {
   const [customers, setCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [sortBy, setSortBy] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [showForm, setShowForm] = useState(false);
@@ -18,18 +22,26 @@ function CustomerList() {
     status: "",
     amount: ""
   });
-  const [searchByName , setSearchByName] = useState([]);
+  const [searchByName , setSearchByName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(10);
-  const [errorMessage , setErrorMessage] = useState("")
+  const [errorMessage , setErrorMessage] = useState("");
 
   useEffect(() => {
     setCustomers(customerList);
+    setFilteredCustomers(customerList);
   }, []);
+
+  useEffect(() => {
+    const filtered = customers.filter(customer =>
+      customer.customerName.toLowerCase().includes(searchByName.toLowerCase())
+    );
+    setFilteredCustomers(filtered);
+  }, [customers, searchByName]);
 
   const handleSort = (key) => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
-    const sortedCustomers = [...customers].sort((a, b) => {
+    const sortedCustomers = [...filteredCustomers].sort((a, b) => {
       const comparison =
         key === "date"
           ? new Date(a.date) - new Date(b.date)
@@ -38,13 +50,15 @@ function CustomerList() {
           : a[key].localeCompare(b[key], undefined, { numeric: true });
       return sortOrder === "asc" ? comparison : -comparison;
     });
-    setCustomers(sortedCustomers);
+    setFilteredCustomers(sortedCustomers);
     setSortBy(key);
     setSortOrder(newSortOrder);
   };
 
   const handleDelete = (trackingId) => {
-    setCustomers(customers.filter((customer) => customer.trackingId !== trackingId));
+    const updatedCustomers = customers.filter((customer) => customer.trackingId !== trackingId);
+    setCustomers(updatedCustomers);
+    setFilteredCustomers(updatedCustomers);
   };
 
   const handleStatusChange = (trackingId, newStatus) => {
@@ -55,6 +69,7 @@ function CustomerList() {
       return customer;
     });
     setCustomers(updatedCustomers);
+    setFilteredCustomers(updatedCustomers);
   };
 
   const handleEdit = (customer) => {
@@ -68,15 +83,7 @@ function CustomerList() {
     setEditedCustomer({ ...editedCustomer, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Validation
-    if (!editedCustomer.trackingId || !editedCustomer.productName || !editedCustomer.customerName || !editedCustomer.date || !editedCustomer.paymentMode || !editedCustomer.status || !editedCustomer.amount) {
-      setErrorMessage("Please fill in all fields.");
-      return;
-    }
-
+  const handleSubmit = (editedCustomer) => {
     if (selectedCustomer) {
       const updatedCustomers = customers.map((customer) => {
         if (customer.trackingId === editedCustomer.trackingId) {
@@ -91,19 +98,11 @@ function CustomerList() {
     setShowForm(false);
   };
 
-  const filterByName = (e)=> {
-    setSearchByName(e.target.value);
-    const filteredCustomers = customerList.filter((customer) =>
-      customer.customerName.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setCustomers(filteredCustomers);
-  };
-
   // Pagination
   const indexOfLastCustomer = currentPage * entriesPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - entriesPerPage;
-  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
-  const totalPages = Math.ceil(customers.length / entriesPerPage);
+  const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+  const totalPages = Math.ceil(filteredCustomers.length / entriesPerPage);
 
   const handleClick = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -115,60 +114,64 @@ function CustomerList() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Customer List</h1>
-      <input type="search" name="" id="" placeholder="Search by customer name..." onChange={filterByName}/>
-      {showForm ? (
-        <div className={`sidebar ${showForm ? 'show' : ''}`}>
-          <form onSubmit={handleSubmit}>
-            <input type="text" name="trackingId" value={editedCustomer.trackingId} onChange={handleChange} placeholder="Id" />
-            <select name="productName" value={editedCustomer.productName} onChange={handleChange}>
-              <option value="Television">Television</option>
-              <option value="Mobile">Mobile</option>
-              <option value="Car">Car</option>
-              <option value="Clothe">Clothe</option>
-              <option value="Bike">Bike</option>
-            </select>
-            <input type="text" name="customerName" value={editedCustomer.customerName} onChange={handleChange} placeholder="Customer Name" />
-            <input type="date" name="date" value={editedCustomer.date} onChange={handleChange} placeholder="Date" />
-            <select name="paymentMode" value={editedCustomer.paymentMode} onChange={handleChange} placeholder="Mode of Payment">
-              <option value="Cash">Cash</option>
-              <option value="Card">Card</option>
-              <option value="Wallet">Wallet</option>
-            </select>
-            <select name="status" value={editedCustomer.status} onChange={handleChange} placeholder="Status of order">
-              <option value="Process">Process</option>
-              <option value="Completed">Completed</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-            <input type="number" name="amount" value={editedCustomer.amount} onChange={handleChange} placeholder="Amount" />
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-            <button type="submit">Save</button>
-            <button onClick={() => setShowForm(false)} className="close-button">Close</button>
-          </form>
+      <div className="topBarWrapper">
+        <div className="search-container">
+          <i className="fa fa-search icon"></i>
+          <input
+            type="search"
+            placeholder="Search by customer name..."
+            value={searchByName}
+            onChange={(e) => setSearchByName(e.target.value)}
+            className="search-input"
+          />
         </div>
-      ) : (
-        <button onClick={() => {
-          setSelectedCustomer(null);
-          setEditedCustomer({
-            trackingId: "",
-            productName: "",
-            customerName: "",
-            date: "",
-            paymentMode: "",
-            status: "",
-            amount: ""
-          });
-          setShowForm(true);
-        }}>Add Customer</button>
-      )}
-      <label htmlFor="entriesPerPage">Entries per page:</label>
-      <select id="entriesPerPage" value={entriesPerPage} onChange={handleEntriesPerPageChange}>
-        <option value={5}>5</option>
-        <option value={10}>10</option>
-        <option value={15}>15</option>
-        <option value={20}>20</option>
-      </select>
+        <img src={ProfileImg} alt="" />
+      </div>
+
+      <div className="addButtonAndEntriesWrapper">
+        <div className="entriesPerPageSelect">
+          <label htmlFor="entriesPerPage">Show</label>
+          <select id="entriesPerPage" value={entriesPerPage} onChange={handleEntriesPerPageChange}>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+            <option value={20}>20</option>
+          </select>
+          <label htmlFor="entriesPerPage">Entries</label>
+        </div>
+        {showForm ? (
+          <CustomerForm
+            onSubmit={handleSubmit}
+            onCancel={() => setShowForm(false)}
+            errorMessage={errorMessage}
+            initialCustomer={selectedCustomer || {
+              trackingId: "",
+              productName: "",
+              customerName: "",
+              date: "",
+              paymentMode: "",
+              status: "",
+              amount: ""
+            }}
+          />
+        ) : (
+          <button onClick={() => {
+            setSelectedCustomer(null);
+            setEditedCustomer({
+              trackingId: "",
+              productName: "",
+              customerName: "",
+              date: "",
+              paymentMode: "",
+              status: "",
+              amount: ""
+            });
+            setShowForm(true);
+          }} className="addButtonWrapper">Add Customer</button>
+        )}
+      </div>
       <table>
         {/* Table Headers */}
         <thead>
@@ -197,16 +200,23 @@ function CustomerList() {
                 <select
                   value={customer.status}
                   onChange={(e) => handleStatusChange(customer.trackingId, e.target.value)}
+                  className={
+                    customer.status === 'Process'
+                      ? 'processStatus'
+                      : customer.status === 'Completed'
+                      ? 'processComplete'
+                      : 'processCancelled'
+                  }
                 >
                   <option value="Process">Process</option>
-                  <option value="Completed">Completed</option>
+                  <option value="Completed">Delivered</option>
                   <option value="Cancelled">Cancelled</option>
                 </select>
               </td>
               <td>{customer.amount}</td>
               <td>
-                <button onClick={() => handleEdit(customer)}>Edit</button>
-                <button onClick={() => handleDelete(customer.trackingId)}>Delete</button>
+                <button onClick={() => handleEdit(customer)} className="handleEditButton"><FaRegEdit /></button>
+                <button onClick={() => handleDelete(customer.trackingId)} className="handleDeleteButton"><RiDeleteBin6Line /></button>
               </td>
             </tr>
           ))}
@@ -224,4 +234,4 @@ function CustomerList() {
   );
 }
 
-export default CustomerList;
+export default App;

@@ -1,47 +1,176 @@
+*{
+  font-family: 'Montserrat';
+
+}
 
 .sidebar {
   position: fixed;
   top: 0;
   right: -300px; /* Initially hidden */
-  width: 300px;
+  width: 45%;
   height: 100%;
   background-color: #f0f0f0;
   z-index: 1000;
-  transition: right 0.3s ease-in-out;
   padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+  transition: right 0.3s ease-in-out; /* Transition effect on right property */
 }
 
- .sidebar.show { 
-  right: 0; 
-} 
-/* .sidebar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 20%;
-  background-color: #f4f4f4;
-  overflow-y: auto;
-  padding: 20px;
+.labelWrapper {
+  font-size: 20px;
+  font-family: sans-serif;
+  font-weight: bolder;
+}
+
+.formWrapper {
   display: flex;
   flex-direction: column;
-  z-index: 1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transform: translateX(100%);
-  transition: transform 0.3s ease-in-out;
-} */
+  gap: 25px;
+  align-items: flex-start;
+}
 
-
-
-/* Rest of your CSS styles */
+.sidebar.show {
+  right: 0;
+}
 
 .close-button {
   position: absolute;
   top: 10px;
-  right:110%;
+  right: 101%; /* Ensure it's outside the visible area initially */
 }
 
-.error-message{
-  color: Red;
+.error-message {
+  color: red;
+}
+
+.inputWrapper {
+  width: 360px;
+  height: 35px;
+  background-color: white;
+  color: grey;
+  border-radius: 5px;
+}
+
+.inputOptionWrapper {
+  width: 367px;
+  height: 35px;
+  background-color: white;
+  color: grey;
+  border-radius: 5px;
+}
+
+.inputDateWrapper {
+  width: 363px;
+  height: 35px;
+  background-color: white;
+  color: grey;
+  border-radius: 5px;
+}
+
+.addButton {
+  width: 55%;
+}
+.container{
+  width: 100%;
+}
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; /* Ensure it's above other content */
+  display: none; /* Initially hidden */
+}
+
+.sidebar.show + .blur-background {
+  display: block; /* Show the overlay when the sidebar is visible */
+}
+
+.search-container {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  left: 5px; /* Adjust this value to position the icon */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.search-input {
+  padding-left: 25px; /* Adjust this value as needed */
+  height: 30px;
+  width: 300px ;
+  color:  #4d4d4d;
+  background-color: #e0e0e0;
+  border-width: 0.5px;
+}
+
+.topBarWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.addButtonAndEntriesWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+.entriesPerPageSelect{
+  display: flex;
+  gap: 10px;
+}
+
+#entriesPerPage{
+  background-color: transparent;
+  color: black;
+  border: none;
+}
+
+table{
+  margin-top: 50px;
+  margin-left: 5%;
+  width: 95%;
+}
+thead{
+  font-size: 20px;
+}
+
+.handleEditButton{
+  background-color: transparent;
+  color: black;
+}
+
+.handleDeleteButton{
+  background-color: transparent;
+  color: grey;
+}
+
+.processStatus {
+  color: #ff5400; /* Orange color */
+  background-color: rgba(255, 84, 0, 0.2); /* Light orange background */
+  border: none;
+  border-radius: 10px;
+}
+
+.processComplete {
+  color: #34a346; /* Green color */
+  background-color: rgba(52, 163, 70, 0.2); /* Light green background */
+  border: none;
+  border-radius: 10px;
+}
+
+.processCancelled {
+  color: black;
+  background-color: rgba(255, 0, 4, 0.2); /* Light red background */
+  border: none;
+  border-radius: 10px;
 }
