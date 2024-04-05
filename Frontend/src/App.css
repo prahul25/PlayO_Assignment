@@ -119,7 +119,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 20px;
   margin-left: 40px;
   margin-right: 40px;
 }
@@ -174,3 +174,29 @@ thead{
   border: none;
   border-radius: 10px;
 }
+.functionalButtonWrapper{
+  margin-top: 25px;
+  margin-left:25px;
+display: flex;
+gap: 10px;
+}
+.functionalNavButton{
+  color: #4d4d4d;
+  background-color: transparent;
+}
+
+.functionalNumButton:disabled{
+  color: #4d4d4d;
+  background-color: transparent;
+}
+
+
+.functionalButtonWrapper {
+  margin-top: 25px;
+  margin-left: 25px;
+  display: flex;
+  gap: 10px;
+}
+
+
+
