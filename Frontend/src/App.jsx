@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import customerList from "./Assets/customerData";
-import ProfileImg from "./Assets/Photo.png";
 import "./App.css";
 import CustomerForm from "./CustomerForm";
-import { FaRegEdit } from "react-icons/fa";
-import { RiDeleteBin6Line } from "react-icons/ri";
+
+import PaginationComponent from "./Pagination";
+import TableComponent from "./TableComponent";
+import TopBarWrapper from "./TopBarWrapper";
+import EntriesPerPageSelect from "./EntriesPerPageSelect";
 
 function App() {
   const [customers, setCustomers] = useState([]);
@@ -84,6 +86,13 @@ function App() {
   };
 
   const handleSubmit = (editedCustomer) => {
+
+    // Validation
+  if (!editedCustomer.trackingId || !editedCustomer.productName || !editedCustomer.customerName || !editedCustomer.date || !editedCustomer.paymentMode || !editedCustomer.status || !editedCustomer.amount) {
+    setErrorMessage("Please fill in all fields and refresh the Page");
+    return;
+  }
+  
     if (selectedCustomer) {
       const updatedCustomers = customers.map((customer) => {
         if (customer.trackingId === editedCustomer.trackingId) {
@@ -116,31 +125,13 @@ function App() {
   return (
     <div className="container">
       <h1>Customer List</h1>
-      <div className="topBarWrapper">
-        <div className="search-container">
-          <i className="fa fa-search icon"></i>
-          <input
-            type="search"
-            placeholder="Search by customer name..."
-            value={searchByName}
-            onChange={(e) => setSearchByName(e.target.value)}
-            className="search-input"
-          />
-        </div>
-        <img src={ProfileImg} alt="" />
-      </div>
+      <TopBarWrapper searchByName={searchByName} setSearchByName={setSearchByName}/>
 
       <div className="addButtonAndEntriesWrapper">
-        <div className="entriesPerPageSelect">
-          <label htmlFor="entriesPerPage">Show</label>
-          <select id="entriesPerPage" value={entriesPerPage} onChange={handleEntriesPerPageChange}>
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={15}>15</option>
-            <option value={20}>20</option>
-          </select>
-          <label htmlFor="entriesPerPage">Entries</label>
-        </div>
+        <EntriesPerPageSelect
+          entriesPerPage={entriesPerPage}
+          handleEntriesPerPageChange={handleEntriesPerPageChange}
+        />
         {showForm ? (
           <CustomerForm
             onSubmit={handleSubmit}
@@ -172,64 +163,20 @@ function App() {
           }} className="addButtonWrapper">Add Customer</button>
         )}
       </div>
-      <table>
-        {/* Table Headers */}
-        <thead>
-          <tr>
-            <th onClick={() => handleSort("trackingId")}>Tracking ID</th>
-            <th onClick={() => handleSort("productName")}>Product</th>
-            <th onClick={() => handleSort("customerName")}>Customer</th>
-            <th onClick={() => handleSort("date")}>Date</th>
-            <th onClick={() => handleSort("paymentMode")}>Payment Mode</th>
-            <th onClick={() => handleSort("status")}>Status</th>
-            <th onClick={() => handleSort("amount")}>Amount</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        {/* Table Body */}
-        <tbody>
-          {/* Existing Customers */}
-          {currentCustomers.map((customer) => (
-            <tr key={customer.trackingId}>
-              <td>{customer.trackingId}</td>
-              <td>{customer.productName}</td>
-              <td>{customer.customerName}</td>
-              <td>{customer.date}</td>
-              <td>{customer.paymentMode}</td>
-              <td>
-                <select
-                  value={customer.status}
-                  onChange={(e) => handleStatusChange(customer.trackingId, e.target.value)}
-                  className={
-                    customer.status === 'Process'
-                      ? 'processStatus'
-                      : customer.status === 'Completed'
-                      ? 'processComplete'
-                      : 'processCancelled'
-                  }
-                >
-                  <option value="Process">Process</option>
-                  <option value="Completed">Delivered</option>
-                  <option value="Cancelled">Cancelled</option>
-                </select>
-              </td>
-              <td>{customer.amount}</td>
-              <td>
-                <button onClick={() => handleEdit(customer)} className="handleEditButton"><FaRegEdit /></button>
-                <button onClick={() => handleDelete(customer.trackingId)} className="handleDeleteButton"><RiDeleteBin6Line /></button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TableComponent
+        currentCustomers={currentCustomers}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        handleStatusChange={handleStatusChange}
+        handleSort={handleSort} // Pass the handleSort function to TableComponent
+      />
       {/* Pagination */}
-      <div className="functionalButtonWrapper">
-        <button onClick={() => handleClick(currentPage > 1 ? currentPage - 1 : currentPage)} disabled={currentPage === 1} className="functionalNavButton">Previous</button>
-        {Array.from({ length: totalPages }).map((_, index) => (
-          <button key={index} onClick={() => handleClick(index + 1)} className="functionalNumButton">{index + 1}</button>
-        ))}
-        <button onClick={() => handleClick(currentPage < totalPages ? currentPage + 1 : currentPage)} disabled={currentPage === totalPages} className="functionalNavButton">Next</button>
-      </div>
+      {/* Render Pagination Component */}
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handleClick={handleClick}
+      />
     </div>
   );
 }

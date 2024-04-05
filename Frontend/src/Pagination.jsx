@@ -1,28 +1,15 @@
-// Pagination.js
-// import React from "react";
+import React from "react";
 
-function Pagination( totalPages, currentPage, onPageChange ) {
-  const pageNumbers = [];
-
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-
+const PaginationComponent = ({ currentPage, totalPages, handleClick }) => {
   return (
-    <div>
-      <button onClick={() => onPageChange(currentPage - 1)} disabled={currentPage === 1}>
-        Previous
-      </button>
-      {pageNumbers.map((number) => (
-        <button key={number} onClick={() => onPageChange(number)}>
-          {number}
-        </button>
+    <div className="functionalButtonWrapper">
+      <button onClick={() => handleClick(currentPage > 1 ? currentPage - 1 : currentPage)} disabled={currentPage === 1} className="functionalNavButton">Previous</button>
+      {Array.from({ length: totalPages }).map((_, index) => (
+        <button key={index} onClick={() => handleClick(index + 1)} className="functionalNumButton">{index + 1}</button>
       ))}
-      <button onClick={() => onPageChange(currentPage + 1)} disabled={currentPage === totalPages}>
-        Next
-      </button>
+      <button onClick={() => handleClick(currentPage < totalPages ? currentPage + 1 : currentPage)} disabled={currentPage === totalPages} className="functionalNavButton">Next</button>
     </div>
   );
-}
+};
 
-export default Pagination;
+export default PaginationComponent;
