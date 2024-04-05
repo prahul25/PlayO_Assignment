@@ -89,7 +89,7 @@ function App() {
 
     // Validation
   if (!editedCustomer.trackingId || !editedCustomer.productName || !editedCustomer.customerName || !editedCustomer.date || !editedCustomer.paymentMode || !editedCustomer.status || !editedCustomer.amount) {
-    setErrorMessage("Please fill in all fields and refresh the Page");
+    setErrorMessage("Please fill in all fields");
     return;
   }
   
